@@ -34,11 +34,11 @@ type Response struct {
 
 // Code 메서드는 Login API의 응답 HTTP 상태코드를 반환합니다
 func (res Response) Code() int {
-	return 200
+	return res.code
 }
 
 // Data 메서드는 Login API의 Json Data를 반환합니다
-func (res *Response) Data() ([]byte, error) {
+func (res Response) Data() ([]byte, error) {
 	return json.Marshal(res)
 }
 
@@ -60,14 +60,13 @@ func (api *API) URI() string {
 func (api *API) Post(w http.ResponseWriter, req *http.Request, ps httprouter.Params) response.Response {
 	ul := new(user.Login)
 
-	err := binding.Bind(req, ul)
-	if err != nil {
-		log.Println(err)
+	if errs := binding.Bind(req, ul); errs != nil {
+		log.Println(errs)
 		return &Response{200, "", false, "요청 메시지 파싱에 실패하였습니다"}
 	}
 
 	u := new(user.User)
-	err = db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": ul.UID}).Decode(&u)
+	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": ul.UID}).Decode(&u)
 
 	if err != nil {
 		log.Println("DB UID : ", u.UID)
