@@ -2,6 +2,7 @@ package account
 
 import (
 	"gwahangmi-backend/apis/account/login"
+	"gwahangmi-backend/apis/account/signup"
 	"gwahangmi-backend/apis/api"
 )
 
@@ -13,6 +14,7 @@ func init() {
 
 	apis := []api.API{
 		new(login.API),
+		new(signup.API),
 	}
 
 	for i := 0; i < len(apis); i++ {
