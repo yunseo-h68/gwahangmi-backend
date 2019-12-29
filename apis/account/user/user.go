@@ -13,6 +13,7 @@ type User struct {
 	Pw         string      `bson:"pw" json:"pw"`
 	Name       string      `bson:"uname" json:"uname"`
 	ProfileImg string      `bson:"profile_img" json:"profile_img"`
+	Point      int         `bson:"point" json:"point"`
 }
 
 // Login 구조체는 로그인에 필요한 정보를 담습니다
@@ -39,11 +40,12 @@ func (l *Login) FieldMap(req *http.Request) binding.FieldMap {
 }
 
 // New 함수는 새로운 User 구조체를 생성합니다.
-func New(uid, pw, name, profileImg string) (*User, error) {
+func New() (*User, error) {
 	u := new(User)
-	u.UID = uid
-	u.Pw = pw
-	u.Name = name
-	u.ProfileImg = profileImg
+	u.UID = ""
+	u.Pw = ""
+	u.Name = ""
+	u.ProfileImg = ""
+	u.Point = 0
 	return u, nil
 }

@@ -64,13 +64,16 @@ func (api *API) Post(w http.ResponseWriter, req *http.Request, ps httprouter.Par
 		log.Println(errs)
 		return &Response{200, "", false, "요청 메시지 파싱에 실패하였습니다"}
 	}
+	log.Println("Request UID : ", ul.UID)
+	log.Println("Request PW : ", ul.Pw)
 
 	u := new(user.User)
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": ul.UID}).Decode(&u)
 
+	log.Println("DB UID : ", u.UID)
+	log.Println("DB PW : ", u.Pw)
+
 	if err != nil {
-		log.Println("DB UID : ", u.UID)
-		log.Println("DB PW : ", u.Pw)
 		log.Println(err)
 		return &Response{404, "", false, "존재하지 않는 User입니다"}
 	}
