@@ -1,5 +1,37 @@
 # APIs
-과학미科學美의 API 명세
+과학미科學美의 API 명세 및 Description
+
+## API Response 구조
+- code(int) : 응답 코드
+- message(String) : 에러메시지
+- data : 해당 API의 response body
+
+&lt;Example&gt;
+- Login API Response Body 예시
+```json
+{
+    "code": 200,
+    "message": "",
+    "data": {
+        "uname": "Yunseo Hwang",
+        "isSuccess": true,
+        "message": "로그인에 성공하셨습니다"
+    }
+}
+```
+
+- Signup API Response Body 예시
+```json
+{
+    "code": 200,
+    "message": "",
+    "data": {
+        "uname": "",
+        "isSuccess": false,
+        "message": "계정이 이미 존재합니다"
+    }
+}
+```
 
 ## Account API
 ### Login API
