@@ -65,3 +65,52 @@
     - isSuccess(Boolean): signup 성공 여부
     - message(String): signup 결과에 대한 상세한 메시지
       - ex) `이미 존재하는 계정`, `Signup 성공` 등
+### Profile API
+- `GET api/account/profile`
+  - request header:
+  - params: 
+    - uid(String): 아이디 값인 이메일 
+  - request body: X
+  - response header: 
+    - `Content-Type` : `application/json`
+  - response body:
+    - profile_img(String): 사용자 프로필의 프로필 이미지 경로
+    - isSuccess(Boolean): 프로필 조회 성공 여부
+    - message(String): 프로필 조회 결과에 대한 상세한 메시지
+- `POST api/account/profile`
+  - request header:
+    - `Content-Type` : `multipart/form-data`
+  - params: X
+  - request body:
+    - uid(String) : 아이디 값인 이메일
+    - profile_img(Binary Data): 프로필 이미지 파일
+  - response header:
+    - `Content-Type` : `application/json`
+  - response body:
+    - profile_img(String): 프로필 이미지 파일 경로
+    - isSuccess(Boolean): 프로필 등록 성공 여부
+    - message(String): 프로필 조회 결과에 대한 상세한 메시지
+- `PUT api/account/profile`
+   - request header:
+    - `Content-Type` : `multipart/form-data`
+  - params: X
+  - request body:
+    - uid(String) : 아이디 값인 이메일
+    - profile_img(Binary Data): 프로필 이미지 파일
+  - response header:
+    - `Content-Type` : `application/json`
+  - response body:
+    - profile_img(String): 프로필 이미지 파일 경로
+    - isSuccess(Boolean): 프로필 수정 성공 여부
+    - message(String): 프로필 조회 결과에 대한 상세한 메시지
+- `DELETE api/account/profile`
+  - request header: X
+  - params: 
+    - uid(String): 아이디 값인 이메일 
+  - request body: X
+  - response header: 
+    - `Content-Type` : `application/json`
+  - response body:
+    - profile_img(String): 프로필 삭제 후, Default 프로필 이미지 파일 경로
+    - isSuccess(Boolean): 프로필 조회 삭제 여부
+    - message(String): 프로필 조회 결과에 대한 상세한 메시지

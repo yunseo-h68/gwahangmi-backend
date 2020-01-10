@@ -50,7 +50,7 @@ func New() (*User, error) {
 	u.UID = ""
 	u.Pw = ""
 	u.Name = ""
-	u.ProfileImg = ""
+	u.ProfileImg = "profile_default_gwahangmi.jpg"
 	u.Point = 0
 	u.PostCnt = 0
 	return u, nil
