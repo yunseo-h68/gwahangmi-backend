@@ -27,6 +27,7 @@ type Login struct {
 // FieldMap 메서드는 User 타입을 binding.FieldMapper 인터페이스이도록 하기 위해 만든 메서드입니다.
 func (u *User) FieldMap(req *http.Request) binding.FieldMap {
 	return binding.FieldMap{
+		&u.ID:         "_id",
 		&u.UID:        "uid",
 		&u.Pw:         "pw",
 		&u.Name:       "uname",
