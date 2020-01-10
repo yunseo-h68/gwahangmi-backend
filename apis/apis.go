@@ -3,7 +3,6 @@ package apis
 import (
 	"gwahangmi-backend/apis/account"
 	"gwahangmi-backend/apis/api"
-	"gwahangmi-backend/apis/response"
 	"log"
 	"net/http"
 
@@ -28,23 +27,23 @@ func init() {
 }
 
 // AddAPI 함수는 API를 등록합니다
-func AddAPI(router *httprouter.Router, api api.API) {
-	log.Println("\"" + api.URI() + "\" api is registerd")
+func AddAPI(router *httprouter.Router, apiElement api.API) {
+	log.Println("\"" + apiElement.URI() + "\" api is registerd")
 
-	router.GET(api.URI(), func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-		res := api.Get(w, req, ps)
-		response.HTTPResponse(w, req, res)
+	router.GET(apiElement.URI(), func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+		res := apiElement.Get(w, req, ps)
+		api.HTTPResponse(w, req, res)
 	})
-	router.POST(api.URI(), func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-		res := api.Post(w, req, ps)
-		response.HTTPResponse(w, req, res)
+	router.POST(apiElement.URI(), func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+		res := apiElement.Post(w, req, ps)
+		api.HTTPResponse(w, req, res)
 	})
-	router.PUT(api.URI(), func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-		res := api.Put(w, req, ps)
-		response.HTTPResponse(w, req, res)
+	router.PUT(apiElement.URI(), func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+		res := apiElement.Put(w, req, ps)
+		api.HTTPResponse(w, req, res)
 	})
-	router.DELETE(api.URI(), func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-		res := api.Delete(w, req, ps)
-		response.HTTPResponse(w, req, res)
+	router.DELETE(apiElement.URI(), func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+		res := apiElement.Delete(w, req, ps)
+		api.HTTPResponse(w, req, res)
 	})
 }

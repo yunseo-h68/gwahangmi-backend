@@ -15,6 +15,7 @@ type User struct {
 	Name       string      `bson:"uname" json:"uname"`
 	ProfileImg string      `bson:"profile_img" json:"profile_img"`
 	Point      int         `bson:"point" json:"point"`
+	PostCnt    int         `bson:"post_cnt" json:"post_cnt"`
 }
 
 // Login 구조체는 로그인에 필요한 정보를 담습니다
@@ -31,6 +32,7 @@ func (u *User) FieldMap(req *http.Request) binding.FieldMap {
 		&u.Name:       "uname",
 		&u.ProfileImg: "profile_img",
 		&u.Point:      "point",
+		&u.PostCnt:    "post_cnt",
 	}
 }
 
@@ -50,6 +52,7 @@ func New() (*User, error) {
 	u.Name = ""
 	u.ProfileImg = ""
 	u.Point = 0
+	u.PostCnt = 0
 	return u, nil
 }
 

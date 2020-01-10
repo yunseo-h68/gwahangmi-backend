@@ -2,11 +2,10 @@ package signup
 
 import (
 	"context"
-	"encoding/json"
 	"gwahangmi-backend/apis/account/user"
+	"gwahangmi-backend/apis/api"
 	"gwahangmi-backend/apis/db"
 	"gwahangmi-backend/apis/method"
-	"gwahangmi-backend/apis/response"
 	"log"
 	"net/http"
 
@@ -25,36 +24,24 @@ type API struct {
 	method.DeleteNotSupported
 }
 
-// Response 는 Signup API의 응답값을 정의합니다
-type Response struct {
-	code      int
+type response struct {
 	Uname     string `json:"uname"`
 	IsSuccess bool   `json:"isSuccess"`
 	Message   string `json:"message"`
 }
 
-// Code 메서드는 Signup API의 응답 HTTP 상태코드를 반환합니다
-func (res Response) Code() int {
-	return res.code
-}
-
-// Data 메서드는 Signup API의 Json Data를 반환합니다
-func (res Response) Data() ([]byte, error) {
-	return json.Marshal(res)
-}
-
 // URI 메서드는 Signup API의 URI를 반환합니다
-func (api *API) URI() string {
+func (signupApi *API) URI() string {
 	return "/api/account/signup"
 }
 
 // Post 메서드는 Signup API가 Request 메서드 중 Post을 지원함을 의미합니다
-func (api *API) Post(w http.ResponseWriter, req *http.Request, ps httprouter.Params) response.Response {
+func (signupApi *API) Post(w http.ResponseWriter, req *http.Request, ps httprouter.Params) api.Response {
 	u, _ := user.New()
 
 	if errs := binding.Bind(req, u); errs != nil {
 		log.Println("요청 메시지 파싱 실패 : ", errs)
-		return &Response{http.StatusInternalServerError, "", false, "요청 메시지 파싱에 실패하였습니다"}
+		return api.Response{http.StatusInternalServerError, errs.Error(), response{"", false, "요청 메시지 파싱에 실패하였습니다"}}
 	}
 
 	u.ID = primitive.NewObjectID()
@@ -66,10 +53,9 @@ func (api *API) Post(w http.ResponseWriter, req *http.Request, ps httprouter.Par
 		u.Pw = string(hashedPw[:])
 		if _, err := db.MongoDB.DB("gwahangmi").C("users").InsertOne(context.TODO(), u); err != nil {
 			log.Println("DB Insert 실패 : ", err)
-			return Response{http.StatusInternalServerError, "", false, "DB Insert 실패"}
+			return api.Response{http.StatusInternalServerError, err.Error(), response{"", false, "DB Insert 실패"}}
 		}
-		return Response{http.StatusCreated, u.Name, true, "Signup 성공"}
+		return api.Response{http.StatusCreated, "", response{u.Name, true, "Signup 성공"}}
 	}
-	log.Println(u.UID, " : 계정이 이미 존재합니다")
-	return &Response{http.StatusOK, "", false, "계정이 이미 존재합니다"}
+	return api.Response{http.StatusOK, "", response{"", false, "계정이 이미 존재합니다"}}
 }
