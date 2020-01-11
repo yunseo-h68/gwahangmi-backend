@@ -24,7 +24,7 @@ type API struct {
 }
 
 type response struct {
-	ProfileImg string `json:"profile_img"`
+	ProfileImg string `json:"profileImg"`
 	IsSuccess  bool   `json:"isSuccess"`
 	Message    string `json:"message"`
 }
@@ -77,7 +77,7 @@ func (profileApi *API) Delete(w http.ResponseWriter, req *http.Request, ps httpr
 
 func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Params) api.Response {
 	req.ParseForm()
-	_, fh, err := req.FormFile("profile_img")
+	_, fh, err := req.FormFile("profileImg")
 	if err != nil {
 		return api.Response{http.StatusInternalServerError, err.Error(), response{"", false, "파일을 읽는 중 에러 발생"}}
 	}
@@ -107,7 +107,7 @@ func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 		log.Println("프로필 이미지가 없음")
 	}
 
-	_, err = db.MongoDB.DB("gwahangmi").C("users").UpdateOne(context.TODO(), bson.M{"_id": u.ID}, bson.M{"$set": bson.M{"profile_img": profileImgName}})
+	_, err = db.MongoDB.DB("gwahangmi").C("users").UpdateOne(context.TODO(), bson.M{"_id": u.ID}, bson.M{"$set": bson.M{"profileImg": profileImgName}})
 	if err != nil {
 		return api.Response{http.StatusInternalServerError, err.Error(), response{"", false, "User 프로필이미지 이름 Update 실패"}}
 	}
@@ -140,7 +140,7 @@ func deleteProfile(uid, profileImgName string, bucket *gridfs.Bucket) api.Respon
 			log.Println("프로필 이미지 삭제 실패")
 			return api.Response{http.StatusOK, err.Error(), response{"", false, "프로필 이미지 삭제 실패"}}
 		}
-		_, err = db.MongoDB.DB("gwahangmi").C("users").UpdateOne(context.TODO(), bson.M{"uid": uid}, bson.M{"$set": bson.M{"profile_img": defaultProfile}})
+		_, err = db.MongoDB.DB("gwahangmi").C("users").UpdateOne(context.TODO(), bson.M{"uid": uid}, bson.M{"$set": bson.M{"profileImg": defaultProfile}})
 		if err != nil {
 			return api.Response{http.StatusInternalServerError, err.Error(), response{"", false, "User 프로필이미지 이름 Update 실패"}}
 		}
