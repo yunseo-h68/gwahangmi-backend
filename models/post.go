@@ -48,6 +48,7 @@ type fileMeta struct {
 type PointPost struct {
 	ID           interface{} `bson:"_id" json:"id"`
 	PostID       string      `bson:"postID" json:"postID"`
+	Category     string      `bson:"category" json:"category"`
 	TotalPoint   int         `bson:"totalPoint" json:"totalPoint"`
 	AveragePoint float64     `bson:"averagePoint" json:"averagePoint"`
 	UploadDate   interface{} `bson:"uploadDate" json:"uploadDate"`
@@ -77,5 +78,6 @@ func (p *PointPost) FieldMap(req *http.Request) binding.FieldMap {
 		&p.TotalPoint:   "totalPoint",
 		&p.AveragePoint: "averagePoint",
 		&p.UploadDate:   "uploadDate",
+		&p.Category:     "category",
 	}
 }

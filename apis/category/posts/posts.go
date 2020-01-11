@@ -164,6 +164,7 @@ func uploadPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) 
 	}
 	ppoint, _ := models.NewPointPost()
 	ppoint.PostID = p.PostID
+	ppoint.Category = p.Category
 	ppoint.TotalPoint = p.TotalPoint
 	ppoint.AveragePoint = p.AveragePoint
 	ppoint.UploadDate = p.UploadDate.FullDate

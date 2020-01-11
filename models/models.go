@@ -52,6 +52,7 @@ func NewPointPost() (*PointPost, error) {
 	p := new(PointPost)
 	p.ID = primitive.NewObjectID()
 	p.PostID = ""
+	p.Category = ""
 	p.TotalPoint = 0
 	p.AveragePoint = 0.0
 	p.UploadDate = ""
