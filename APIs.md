@@ -7,7 +7,7 @@
   - [Login API](#login-api)
   - [Signup API](#signup-api)
   - [Profile API](#profile-api)
-  - User API
+  - [User API](#user-api)
 - [Category API](#category-api)
   - [Posts API](#posts-api)
   - [Post API](#post-api)
@@ -131,6 +131,19 @@
     - profile_img(String): 프로필 삭제 후, Default 프로필 이미지 파일 경로
     - isSuccess(Boolean): 프로필 조회 성공 여부
     - message(String): 프로필 조회 결과에 대한 상세한 메시지
+### User API
+- `GET /api/account/user/:uid`
+  - request header: X
+  - params: X
+  - request body: X
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - uid(String): 사용자 ID
+    - uname(String): 사용자 이름
+    - profileImg(String): 사용자 프로필 이미지 파일 이름
+    - point(int): 사용자가 보유한 포인트
+    - postCnt(int): 사용자가 게시한 글의 개수
 
 ## Category API
 ### Posts API
@@ -200,7 +213,6 @@
   - response header: 
     - `Content-Type`: `application/json`
   - response body:
-    - isSuccess(Boolean): 해당 글 조회 성공 여부
     - postID(String): 해당 글(Post)의 ID
     - author(String): 해당 글의 작성자 ID
     - category(String): 해당 글의 카테고리(분류)

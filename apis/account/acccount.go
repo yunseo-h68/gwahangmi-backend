@@ -4,6 +4,7 @@ import (
 	"gwahangmi-backend/apis/account/login"
 	"gwahangmi-backend/apis/account/profile"
 	"gwahangmi-backend/apis/account/signup"
+	"gwahangmi-backend/apis/account/user"
 	"gwahangmi-backend/apis/api"
 )
 
@@ -17,6 +18,7 @@ func init() {
 		new(login.API),
 		new(signup.API),
 		new(profile.API),
+		new(user.API),
 	}
 
 	for i := 0; i < len(apis); i++ {
