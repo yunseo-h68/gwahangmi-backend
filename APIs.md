@@ -10,7 +10,7 @@
   - User API
 - [Category API](#category-api)
   - [Posts API](#posts-api)
-  - Post API
+  - [Post API](#post-api)
   - Point API
   - Comment API
 - SciQuiz API
@@ -192,3 +192,28 @@
     - postID(String): 삭제 시도한 글의 ID(삭제 성공시 `""`)
     - isSuccess(Boolean): 글 삭제 성공 여부
     - message(String): 글 삭제 결과에 대한 상세한 메시지 
+### Post API
+- `GET /api/category/posts/:post-id`
+  - request header: X
+  - params: X
+  - request body: X
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - isSuccess(Boolean): 해당 글 조회 성공 여부
+    - postID(String): 해당 글(Post)의 ID
+    - author(String): 해당 글의 작성자 ID
+    - category(String): 해당 글의 카테고리(분류)
+    - title(String): 해당 글의 제목
+    - content(String): 해당 글의 본문(내용) 파일 이름
+    - participantCnt(int): 해당 글 평가에 참여한 사용자 수
+    - totalPoint(int): 해당 글의 총 평가 점수(point)
+    - averagePoint(float): 해당 글의 평균 평가 점수(point)
+    - uploadDate:
+      - year: 해당 글의 작성시간 중 연도
+      - month: 해당 글의 작성시간 중 월
+      - day: 해당 글의 작성시간 중 일
+      - hour: 해당 글의 작성시간 중 시간
+      - minute: 해당 글의 작성시간 중 분
+      - second: 해당 글의 작성시간 중 초
+      - fullDate(String): 해당 글의 작성시간

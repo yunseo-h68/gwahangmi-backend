@@ -8,7 +8,7 @@
 - [x] [Signup API 개발](APIs.md#signup-api)
 - [x] [Profile API 개발](APIs.md#profile-api)
 - [x] [Posts API 개발](APIs.md#posts-api)
-- [ ] Post API 개발
+- [X] [Post API 개발](APIs.md#post-api)
 - [ ] Point API 개발
 - [ ] Comment API 개발
 - [ ] User API 개발
