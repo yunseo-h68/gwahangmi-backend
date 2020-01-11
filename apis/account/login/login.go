@@ -38,7 +38,7 @@ func (loginApi *API) Post(w http.ResponseWriter, req *http.Request, ps httproute
 	ul := new(user.Login)
 
 	if errs := binding.Bind(req, ul); errs != nil {
-		log.Println(errs)
+		log.Println("요청메시지 파싱 실패 : ", errs)
 		return api.Response{http.StatusInternalServerError, "", response{"", false, "요청메시지 파싱에 실패하였습니다"}}
 	}
 
@@ -46,17 +46,19 @@ func (loginApi *API) Post(w http.ResponseWriter, req *http.Request, ps httproute
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": ul.UID}).Decode(&u)
 
 	if err != nil {
-		log.Println(err)
+		log.Println("존재하지 않는 User : ", err)
 		return api.Response{http.StatusNotFound, "", response{"", false, "존재하지 않는 User입니다"}}
 	}
 
 	if u.UID == ul.UID {
 		pwOK, err := user.ComparePw(u.Pw, ul.Pw)
 		if pwOK {
+			log.Println("로그인 성공")
 			return api.Response{http.StatusOK, "", response{u.Name, true, "로그인에 성공하셨습니다"}}
 		}
-		log.Println(err)
+		log.Println("잘못된 PW : ", err)
 		return api.Response{http.StatusOK, "", response{"", false, "잘못된 PW입니다"}}
 	}
+	log.Println("잘못된 ID")
 	return api.Response{http.StatusOK, "", response{"", false, "잘못된 ID입니다"}}
 }
