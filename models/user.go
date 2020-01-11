@@ -1,10 +1,9 @@
-package user
+package models
 
 import (
 	"net/http"
 
 	"github.com/mholt/binding"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // User 구조체는 사용자에 대한 정보를 담습니다
@@ -43,25 +42,4 @@ func (l *Login) FieldMap(req *http.Request) binding.FieldMap {
 		&l.UID: "uid",
 		&l.Pw:  "pw",
 	}
-}
-
-// New 함수는 새로운 User 구조체를 생성합니다.
-func New() (*User, error) {
-	u := new(User)
-	u.UID = ""
-	u.Pw = ""
-	u.Name = ""
-	u.ProfileImg = "profile_default_gwahangmi.jpg"
-	u.Point = 0
-	u.PostCnt = 0
-	return u, nil
-}
-
-// ComparePw 함수는 hash화된 Pw와 평문 Pw를 비교하는 함수입니다
-func ComparePw(hash, pw string) (bool, error) {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pw))
-	if err != nil {
-		return false, err
-	}
-	return true, nil
 }

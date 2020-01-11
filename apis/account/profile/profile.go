@@ -2,10 +2,10 @@ package profile
 
 import (
 	"context"
-	"gwahangmi-backend/apis/account/user"
 	"gwahangmi-backend/apis/api"
 	"gwahangmi-backend/apis/db"
 	"gwahangmi-backend/files"
+	"gwahangmi-backend/models"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -38,7 +38,7 @@ func (profileApi *API) URI() string {
 func (profileApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter.Params) api.Response {
 	uid := req.URL.Query().Get("uid")
 
-	u := new(user.User)
+	u := new(models.User)
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&u)
 
 	if err != nil {
@@ -64,7 +64,7 @@ func (profileApi *API) Delete(w http.ResponseWriter, req *http.Request, ps httpr
 		db.MongoDB.DB("gwahangmi").DB,
 	)
 	uid := req.URL.Query().Get("uid")
-	u := new(user.User)
+	u := new(models.User)
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&u)
 	if err != nil {
 		return api.Response{http.StatusNotFound, err.Error(), response{"", false, "존재하지 않는 User"}}
@@ -88,7 +88,7 @@ func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 		db.MongoDB.DB("gwahangmi").DB,
 	)
 
-	u := new(user.User)
+	u := new(models.User)
 	err = db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&u)
 	if err != nil {
 		return api.Response{http.StatusNotFound, "", response{"", false, "존재하지 않는 User"}}

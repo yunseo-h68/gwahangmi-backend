@@ -1,4 +1,4 @@
-package post
+package models
 
 import (
 	"net/http"
@@ -74,37 +74,4 @@ func (p *PointPost) FieldMap(req *http.Request) binding.FieldMap {
 		&p.PostID:     "postID",
 		&p.TotalPoint: "totalPoint",
 	}
-}
-
-// NewPost 함수는 새로운 Post 구조체를 생성합니다
-func NewPost() (*Post, error) {
-	p := new(Post)
-	p.ID = primitive.NewObjectID()
-	p.PostID = ""
-	p.Author = ""
-	p.Category = ""
-	p.Title = ""
-	p.Content = ""
-
-	p.UploadDate.FullDate = ""
-	p.UploadDate.Year = ""
-	p.UploadDate.Month = ""
-	p.UploadDate.Day = ""
-	p.UploadDate.Hour = ""
-	p.UploadDate.Minute = ""
-	p.UploadDate.Second = ""
-
-	p.TotalPoint = 0
-	p.AveragePoint = 0.0
-	p.ParticipantCnt = 0
-	return p, nil
-}
-
-// NewPointPost 함수는 새로운 PointPost 구조체를 생성합니다
-func NewPointPost() (*PointPost, error) {
-	p := new(PointPost)
-	p.ID = primitive.NewObjectID()
-	p.PostID = ""
-	p.TotalPoint = 0
-	return p, nil
 }

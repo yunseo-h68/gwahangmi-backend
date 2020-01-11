@@ -2,10 +2,10 @@ package signup
 
 import (
 	"context"
-	"gwahangmi-backend/apis/account/user"
 	"gwahangmi-backend/apis/api"
 	"gwahangmi-backend/apis/db"
 	"gwahangmi-backend/apis/method"
+	"gwahangmi-backend/models"
 	"log"
 	"net/http"
 
@@ -37,7 +37,7 @@ func (signupApi *API) URI() string {
 
 // Post 메서드는 Signup API가 Request 메서드 중 Post을 지원함을 의미합니다
 func (signupApi *API) Post(w http.ResponseWriter, req *http.Request, ps httprouter.Params) api.Response {
-	u, _ := user.New()
+	u, _ := models.NewUser()
 
 	if errs := binding.Bind(req, u); errs != nil {
 		log.Println("요청 메시지 파싱 실패 : ", errs)
@@ -45,7 +45,7 @@ func (signupApi *API) Post(w http.ResponseWriter, req *http.Request, ps httprout
 	}
 
 	u.ID = primitive.NewObjectID()
-	check := user.User{}
+	check := models.User{}
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": u.UID}).Decode(&check)
 
 	if err != nil {

@@ -1,10 +1,9 @@
-package post
+package models
 
 import (
 	"net/http"
 
 	"github.com/mholt/binding"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // Comment 구조체는 댓글에 대한 정보를 담습니다.
@@ -27,16 +26,4 @@ func (c *Comment) FieldMap(req *http.Request) binding.FieldMap {
 		&c.Content:       "content",
 		&c.UploadDate:    "uploadDate",
 	}
-}
-
-// NewComment 함수는 새로운 Comment 구조체를 생성합니다
-func NewComment() (*Comment, error) {
-	c := new(Comment)
-	c.ID = primitive.NewObjectID()
-	c.ParentsPostID = ""
-	c.CommentID = ""
-	c.Author = ""
-	c.Content = ""
-	c.UploadDate = ""
-	return c, nil
 }

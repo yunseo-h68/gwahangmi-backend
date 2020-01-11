@@ -1,10 +1,9 @@
-package post
+package models
 
 import (
 	"net/http"
 
 	"github.com/mholt/binding"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // Point 구조체는 포인트에 대한 정보를 담습니다.
@@ -23,13 +22,4 @@ func (p *Point) FieldMap(req *http.Request) binding.FieldMap {
 		&p.Point:         "point",
 		&p.ParentsPostID: "parentsPostID",
 	}
-}
-
-// NewPoint 함수는 새로운 Point 구조체를 생성합니다
-func NewPoint() (*Point, error) {
-	p := new(Point)
-	p.ID = primitive.NewObjectID()
-	p.Point = 0
-	p.ParentsPostID = ""
-	return p, nil
 }

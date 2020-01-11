@@ -1,19 +1,18 @@
 package posts
 
 import (
+	"gwahangmi-backend/apis/api"
+	"gwahangmi-backend/apis/db"
+	"gwahangmi-backend/files"
+	"gwahangmi-backend/models"
+
 	"context"
 	"errors"
 	"fmt"
-	"gwahangmi-backend/apis/api"
-	"gwahangmi-backend/apis/category/post"
-	"gwahangmi-backend/apis/db"
-	"gwahangmi-backend/files"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
-
-	"gwahangmi-backend/apis/account/user"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/mholt/binding"
@@ -47,7 +46,7 @@ func (postsApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter
 	findOptions := options.Find()
 	limit, _ := strconv.Atoi(req.URL.Query().Get("limit"))
 	findOptions.SetLimit(int64(limit))
-	var results []*post.PointPost
+	var results []*models.PointPost
 	cur, err := db.MongoDB.DB("gwahangmi").C("posts").Find(context.TODO(), bson.D{{}}, findOptions)
 
 	if err != nil {
@@ -56,7 +55,7 @@ func (postsApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter
 	log.Println("completed find")
 
 	for cur.Next(context.TODO()) {
-		var elem post.PointPost
+		var elem models.PointPost
 		err := cur.Decode(&elem)
 		fmt.Printf(" document: %+v\n", elem)
 		if err != nil {
@@ -89,7 +88,7 @@ func (postsApi *API) Put(w http.ResponseWriter, req *http.Request, ps httprouter
 func (postsApi *API) Delete(w http.ResponseWriter, req *http.Request, ps httprouter.Params) api.Response {
 	postID := req.URL.Query().Get("post_id")
 	category := req.URL.Query().Get("category")
-	p := new(post.Post)
+	p := new(models.Post)
 	err := db.MongoDB.DB("gwahangmi").C("category_"+category).FindOne(context.TODO(), bson.M{"postID": postID}).Decode(&p)
 	if err != nil {
 		return api.Response{http.StatusNotFound, "", postResponse{postID, false, "해당 글이 존재하지 않음"}}
@@ -99,14 +98,14 @@ func (postsApi *API) Delete(w http.ResponseWriter, req *http.Request, ps httprou
 }
 
 func uploadPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) api.Response {
-	p, _ := post.NewPost()
+	p, _ := models.NewPost()
 
 	if errs := binding.Bind(req, p); errs != nil {
 		log.Println("요청 메시지 파싱 실패 : ", errs)
 		return api.Response{http.StatusInternalServerError, errs.Error(), postResponse{"", false, "요청 메시지 파싱 실패"}}
 	}
 	log.Println(p)
-	check := user.User{}
+	check := models.User{}
 	if checkRes, err := idCheck(&check, p.Author); err != nil {
 		log.Println(err)
 		return checkRes
@@ -139,7 +138,7 @@ func uploadPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) 
 		log.Println(err)
 		return api.Response{http.StatusInternalServerError, err.Error(), postResponse{"", false, "글을 DB에 저장하는 데 실패"}}
 	}
-	ppoint, _ := post.NewPointPost()
+	ppoint, _ := models.NewPointPost()
 	ppoint.PostID = p.PostID
 	ppoint.TotalPoint = p.TotalPoint
 	if _, err := db.MongoDB.DB("gwahangmi").C("posts").InsertOne(context.TODO(), ppoint); err != nil {
@@ -162,7 +161,7 @@ func uploadPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) 
 	return api.Response{http.StatusOK, "", postResponse{p.PostID, true, "Post 업로드 성공"}}
 }
 
-func uploadPostToGridFile(p *post.Post) error {
+func uploadPostToGridFile(p *models.Post) error {
 	bucket, err := gridfs.NewBucket(
 		db.MongoDB.DB("gwahangmi").DB,
 	)
@@ -181,7 +180,7 @@ func uploadPostToGridFile(p *post.Post) error {
 	return nil
 }
 
-func idCheck(check *user.User, uid string) (api.Response, error) {
+func idCheck(check *models.User, uid string) (api.Response, error) {
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&check)
 	if err != nil {
 		return api.Response{http.StatusNotFound, "", postResponse{"", false, "존재하지 않는 User의 접근"}}, errors.New("존재하지 않는 User")
@@ -189,8 +188,8 @@ func idCheck(check *user.User, uid string) (api.Response, error) {
 	return api.Response{}, nil
 }
 
-func deletePost(p post.Post) api.Response {
-	check := user.User{}
+func deletePost(p models.Post) api.Response {
+	check := models.User{}
 	if res, err := idCheck(&check, p.Author); err != nil {
 		return res
 	}
@@ -198,7 +197,7 @@ func deletePost(p post.Post) api.Response {
 	bucket, _ := gridfs.NewBucket(
 		db.MongoDB.DB("gwahangmi").DB,
 	)
-	var content *post.Content
+	var content *models.Content
 	err := db.MongoDB.DB("gwahangmi").C("fs.files").FindOne(context.TODO(), bson.M{"filename": p.PostID}).Decode(&content)
 	if err == nil {
 		// 글 content 삭제
