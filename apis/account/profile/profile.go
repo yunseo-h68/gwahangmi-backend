@@ -123,7 +123,7 @@ func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 	if err != nil {
 		return api.Response{http.StatusInternalServerError, err.Error(), response{"", false, "UploadStream Open 실패"}}
 	}
-	if err := files.WriteToGridFile(file, uploadStream); err != nil {
+	if err := files.WriteToGridFileFile(file, uploadStream); err != nil {
 		return api.Response{http.StatusOK, err.Error(), response{"", false, "프로필 이미지 업로드 실패"}}
 	}
 	return api.Response{http.StatusCreated, "", response{profileImgName, true, "프로필 이미지 업로드 성공"}}
