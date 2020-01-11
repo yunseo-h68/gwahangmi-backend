@@ -20,10 +20,6 @@ type API struct {
 	method.DeleteNotSupported
 }
 
-type response struct {
-	postData models.Post
-}
-
 // URI 메서드는 Post API의 URI를 반환합니다
 func (postApi *API) URI() string {
 	return "/api/category/posts/:post-id"
