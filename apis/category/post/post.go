@@ -31,6 +31,19 @@ type date struct {
 	FullDate interface{} `bson:"fullDate" json:"fullDate"`
 }
 
+// Content 는 Post의 content에 대한 정보를 담습니다.
+type Content struct {
+	ID       primitive.ObjectID `bson:"_id"`
+	Filename string             `bson:"filename"`
+	MetaData fileMeta           `bson:"metadata"`
+}
+
+// FileMeta 는 Upload할 파일의 메타정보를 담는 구조체입니다.
+type fileMeta struct {
+	Inode int
+	UID   string `bson:"uid" json:"uid"`
+}
+
 // PointPost 구조체는 포스트의 포인트에 대한 정보를 담습니다.
 type PointPost struct {
 	ID         interface{} `bson:"_id" json:"id"`

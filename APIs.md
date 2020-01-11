@@ -128,7 +128,7 @@
     - postID(String): 글(Post)의 ID
     - isSuccess(Boolean): 글 조회 성공 여부
     - message(String): 글 조회 결과에 대한 상세한 메시지
-- `POST api/category/posts`
+- `POST /api/category/posts`
   - request header: 
     - `Content-Type`: `application/json`
   - params: X
@@ -143,3 +143,31 @@
     - postID(String): 작성한 글의 ID
     - isSuccess(Boolean): 글 업로드 성공 여부
     - message(String): 글 업로드 결과에 대한 상세한 메시지
+- `PUT /api/category/posts`
+  - request header: 
+    - `Content-Type`: `application/json`
+  - params: X
+  - request body:
+    - author(String): 수정한 사용자의 ID
+    - category(String): 수정한 글의 카테고리(분류)
+    - postID(string): 수정할 글의 ID
+    - title(String): 수정한 글의 제목
+    - content(String): 수정한 글의 본문
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - postID(String): 수정한 글의 ID
+    - isSuccess(Boolean): 글 수정 성공 여부
+    - message(String): 글 수정 결과에 대한 상세한 메시지
+- `DELETE /api/category/posts`
+  - request header: X
+  - params:
+    - post_id(String): 삭제할 글의 ID
+    - category(String): 수정할 글의 카테고리(분류)
+  - request body: X
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - postID(String): 삭제 시도한 글의 ID(삭제 성공시 `""`)
+    - isSuccess(Boolean): 글 삭제 성공 여부
+    - message(String): 글 삭제 결과에 대한 상세한 메시지 
