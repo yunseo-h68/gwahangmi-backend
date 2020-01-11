@@ -4,10 +4,10 @@
 [API 명세 바로보기](APIs.md)
 
 ## To Do
-- [ ] Login API 개발
-- [ ] Signup API 개발
-- [ ] Profile API 개발
-- [ ] Posts API 개발
+- [x] Login API 개발
+- [x] Signup API 개발
+- [x] Profile API 개발
+- [x] Posts API 개발
 - [ ] Post API 개발
 - [ ] Point API 개발
 - [ ] Comment API 개발
