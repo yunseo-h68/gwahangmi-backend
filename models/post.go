@@ -46,9 +46,11 @@ type fileMeta struct {
 
 // PointPost 구조체는 포스트의 포인트에 대한 정보를 담습니다.
 type PointPost struct {
-	ID         interface{} `bson:"_id" json:"id"`
-	PostID     string      `bson:"postID" json:"postID"`
-	TotalPoint int         `bson:"totalPoint" json:"totalPoint"`
+	ID           interface{} `bson:"_id" json:"id"`
+	PostID       string      `bson:"postID" json:"postID"`
+	TotalPoint   int         `bson:"totalPoint" json:"totalPoint"`
+	AveragePoint float64     `bson:"averagePoint" json:"averagePoint"`
+	UploadDate   interface{} `bson:"uploadDate" json:"uploadDate"`
 }
 
 // FieldMap 메서드는 Post 타입을 binding.FieldMapper 인터페이스이도록 하기 위해 만든 메서드입니다.
@@ -70,8 +72,10 @@ func (p *Post) FieldMap(req *http.Request) binding.FieldMap {
 // FieldMap 메서드는 PointPost 타입을 binding.FieldMapper 인터페이스이도록 하기 위해 만든 메서드입니다.
 func (p *PointPost) FieldMap(req *http.Request) binding.FieldMap {
 	return binding.FieldMap{
-		&p.ID:         "_id",
-		&p.PostID:     "postID",
-		&p.TotalPoint: "totalPoint",
+		&p.ID:           "_id",
+		&p.PostID:       "postID",
+		&p.TotalPoint:   "totalPoint",
+		&p.AveragePoint: "averagePoint",
+		&p.UploadDate:   "uploadDate",
 	}
 }

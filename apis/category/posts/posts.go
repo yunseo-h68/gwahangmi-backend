@@ -44,16 +44,40 @@ func (postsApi *API) URI() string {
 // Get 메서드는 Posts API가 Request 메서드 중 Get을 지원함을 의미합니다
 func (postsApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter.Params) api.Response {
 	findOptions := options.Find()
+
+	total, _ := strconv.ParseBool(req.URL.Query().Get("total"))
+	average, _ := strconv.ParseBool(req.URL.Query().Get("average"))
+	sort, _ := strconv.ParseBool(req.URL.Query().Get("sort"))
+	if popularity, _ := strconv.ParseBool(req.URL.Query().Get("popularity")); popularity {
+		if total {
+			if sort {
+				findOptions.SetSort(bson.D{primitive.E{Key: "totalPoint", Value: 1}})
+			} else {
+				findOptions.SetSort(bson.D{primitive.E{Key: "totalPoint", Value: -1}})
+			}
+		} else if average {
+			if sort {
+				findOptions.SetSort(bson.D{primitive.E{Key: "averagePoint", Value: 1}})
+			} else {
+				findOptions.SetSort(bson.D{primitive.E{Key: "averagePoint", Value: -1}})
+			}
+		}
+	} else {
+		if sort {
+			findOptions.SetSort(bson.D{primitive.E{Key: "uploadDate", Value: 1}})
+		} else {
+			findOptions.SetSort(bson.D{primitive.E{Key: "uploadDate", Value: -1}})
+		}
+	}
 	limit, _ := strconv.Atoi(req.URL.Query().Get("limit"))
 	findOptions.SetLimit(int64(limit))
+
 	var results []*models.PointPost
 	cur, err := db.MongoDB.DB("gwahangmi").C("posts").Find(context.TODO(), bson.D{{}}, findOptions)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("completed find")
-
 	for cur.Next(context.TODO()) {
 		var elem models.PointPost
 		err := cur.Decode(&elem)
@@ -141,6 +165,8 @@ func uploadPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) 
 	ppoint, _ := models.NewPointPost()
 	ppoint.PostID = p.PostID
 	ppoint.TotalPoint = p.TotalPoint
+	ppoint.AveragePoint = p.AveragePoint
+	ppoint.UploadDate = p.UploadDate.FullDate
 	if _, err := db.MongoDB.DB("gwahangmi").C("posts").InsertOne(context.TODO(), ppoint); err != nil {
 		log.Println(err)
 		return api.Response{http.StatusInternalServerError, err.Error(), postResponse{"", false, "글을 DB에 저장하는 데 실패"}}

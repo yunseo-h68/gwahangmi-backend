@@ -121,11 +121,15 @@
   - request header: X
   - params: 
     - limit(int): 조회할 글(Post)의 개수
+    - popularity(Boolean): true일 경우, 기준을 인기순으로 잡음. false일 경우 최신순
+    - total(Boolean): popularity가 true이고 total도 true일 경우, point의 총점순
+    - average(Boolean): popularity가 true이고 average도 true일 경우, point의 평균순
+    - sort(Boolean): true면 오름차순, false이면 내림차순 정렬
   - request body: X
   - response header: 
     - `Content-Type`: `application/json`
   - response body:
-    - postID(String): 글(Post)의 ID
+    - postID([]String): 글(Post)의 ID 배열
     - isSuccess(Boolean): 글 조회 성공 여부
     - message(String): 글 조회 결과에 대한 상세한 메시지
 - `POST /api/category/posts`
