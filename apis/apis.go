@@ -3,6 +3,7 @@ package apis
 import (
 	"gwahangmi-backend/apis/account"
 	"gwahangmi-backend/apis/api"
+	"gwahangmi-backend/apis/category"
 	"log"
 	"net/http"
 
@@ -17,6 +18,7 @@ func init() {
 
 	apis := [][]api.API{
 		account.AccountAPIs,
+		category.CategoryAPIs,
 	}
 
 	for i := 0; i < len(apis); i++ {
