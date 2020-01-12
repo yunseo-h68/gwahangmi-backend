@@ -76,7 +76,8 @@ func (postsApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter
 	cur, err := db.MongoDB.DB("gwahangmi").C("posts").Find(context.TODO(), bson.D{{}}, findOptions)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Find Err: ", err)
+		return api.Response{http.StatusInternalServerError, err.Error(), getResponse{nil}}
 	}
 	for cur.Next(context.TODO()) {
 		var elem models.PointPost
