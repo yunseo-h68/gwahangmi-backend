@@ -7,6 +7,7 @@
   - [Login API](#login-api)
   - [Signup API](#signup-api)
   - [Profile API](#profile-api)
+  - [Users API](#users-api)
   - [User API](#user-api)
 - [Category API](#category-api)
   - [Posts API](#posts-api)
@@ -16,7 +17,6 @@
 - SciQuiz API
   - Quizzes API
   - Quiz API
-- Rank API
 
 ## API Response 구조
 - code(int) : 응답 코드
@@ -131,8 +131,21 @@
     - profile_img(String): 프로필 삭제 후, Default 프로필 이미지 파일 경로
     - isSuccess(Boolean): 프로필 조회 성공 여부
     - message(String): 프로필 조회 결과에 대한 상세한 메시지
+### Users API
+- `GET /api/account/users`
+  - request header: X
+  - params: 
+    - limit(int): 조회할 글(Post)의 개수
+    - point(Boolean): true일 경우, point순
+    - post(Boolean): true일 경우, post의 개수순
+    - sort(Boolean): true면 오름차순, false이면 내림차순 정렬
+  - request body: X
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - users([]String): 사용자의 ID 배열
 ### User API
-- `GET /api/account/user/:uid`
+- `GET /api/account/users/:uid`
   - request header: X
   - params: X
   - request body: X
@@ -159,9 +172,7 @@
   - response header: 
     - `Content-Type`: `application/json`
   - response body:
-    - postID([]String): 글(Post)의 ID 배열
-    - isSuccess(Boolean): 글 조회 성공 여부
-    - message(String): 글 조회 결과에 대한 상세한 메시지
+    - posts([]String): 글(Post)의 ID 배열
 - `POST /api/category/posts`
   - request header: 
     - `Content-Type`: `application/json`

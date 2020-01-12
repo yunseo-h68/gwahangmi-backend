@@ -29,7 +29,7 @@ type user struct {
 
 // URI 메서드는 Post API의 URI를 반환합니다
 func (postApi *API) URI() string {
-	return "/api/account/user/:uid"
+	return "/api/account/users/:uid"
 }
 
 // Get 메서드는 Post API가 Request 메서드 중 Get을 지원함을 의미합니다

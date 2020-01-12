@@ -7,6 +7,7 @@
 - [x] [Login API 개발](APIs.md#login-api)
 - [x] [Signup API 개발](APIs.md#signup-api)
 - [x] [Profile API 개발](APIs.md#profile-api)
+- [X] [Users API 개발](APIs.md#users-api)
 - [X] [User API 개발](APIs.md#user-api)
 - [x] [Posts API 개발](APIs.md#posts-api)
 - [X] [Post API 개발](APIs.md#post-api)
@@ -14,4 +15,3 @@
 - [ ] Comment API 개발
 - [ ] Quizzes API 개발
 - [ ] Quiz API 개발
-- [ ] Rank API 개발
