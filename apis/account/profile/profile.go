@@ -67,10 +67,10 @@ func (profileApi *API) Delete(w http.ResponseWriter, req *http.Request, ps httpr
 	u := new(models.User)
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&u)
 	if err != nil {
-		return api.Response{http.StatusNotFound, err.Error(), response{"", false, "존재하지 않는 User"}}
+		return api.Response{http.StatusNotFound, err.Error(), response{defaultProfile, false, "존재하지 않는 User"}}
 	}
 	if u.ProfileImg == defaultProfile {
-		return api.Response{http.StatusNotFound, "", response{"", false, "프로필 이미지가 존재하지 않음"}}
+		return api.Response{http.StatusNotFound, "", response{defaultProfile, false, "프로필 이미지가 존재하지 않음"}}
 	}
 	return deleteProfile(uid, u.ProfileImg, bucket)
 }
@@ -79,7 +79,7 @@ func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 	req.ParseForm()
 	_, fh, err := req.FormFile("profileImg")
 	if err != nil {
-		return api.Response{http.StatusInternalServerError, err.Error(), response{"", false, "파일을 읽는 중 에러 발생"}}
+		return api.Response{http.StatusInternalServerError, err.Error(), response{defaultProfile, false, "파일을 읽는 중 에러 발생"}}
 	}
 	uid := req.FormValue("uid")
 	timeNow := time.Now().Format("2006-01-02-15:04:05")
@@ -91,7 +91,7 @@ func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 	u := new(models.User)
 	err = db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&u)
 	if err != nil {
-		return api.Response{http.StatusNotFound, "", response{"", false, "존재하지 않는 User"}}
+		return api.Response{http.StatusNotFound, "", response{defaultProfile, false, "존재하지 않는 User"}}
 	}
 	var img *files.ImageFile
 	err = db.MongoDB.DB("gwahangmi").C("fs.files").FindOne(context.TODO(), bson.M{"filename": u.ProfileImg}).Decode(&img)
@@ -109,7 +109,7 @@ func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 
 	_, err = db.MongoDB.DB("gwahangmi").C("users").UpdateOne(context.TODO(), bson.M{"_id": u.ID}, bson.M{"$set": bson.M{"profileImg": profileImgName}})
 	if err != nil {
-		return api.Response{http.StatusInternalServerError, err.Error(), response{"", false, "User 프로필이미지 이름 Update 실패"}}
+		return api.Response{http.StatusInternalServerError, err.Error(), response{defaultProfile, false, "User 프로필이미지 이름 Update 실패"}}
 	}
 
 	file, _ := fh.Open()
@@ -121,32 +121,32 @@ func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 		opts,
 	)
 	if err != nil {
-		return api.Response{http.StatusInternalServerError, err.Error(), response{"", false, "UploadStream Open 실패"}}
+		return api.Response{http.StatusInternalServerError, err.Error(), response{defaultProfile, false, "UploadStream Open 실패"}}
 	}
 	if err := files.WriteToGridFileFile(file, uploadStream); err != nil {
-		return api.Response{http.StatusOK, err.Error(), response{"", false, "프로필 이미지 업로드 실패"}}
+		return api.Response{http.StatusOK, err.Error(), response{defaultProfile, false, "프로필 이미지 업로드 실패"}}
 	}
 	return api.Response{http.StatusCreated, "", response{profileImgName, true, "프로필 이미지 업로드 성공"}}
 }
 
 func deleteProfile(uid, profileImgName string, bucket *gridfs.Bucket) api.Response {
 	if profileImgName == defaultProfile {
-		return api.Response{http.StatusNotFound, "", response{"", false, "프로필 이미지가 존재하지 않음"}}
+		return api.Response{http.StatusNotFound, "", response{defaultProfile, false, "프로필 이미지가 존재하지 않음"}}
 	}
 	var img *files.ImageFile
 	err := db.MongoDB.DB("gwahangmi").C("fs.files").FindOne(context.TODO(), bson.M{"filename": profileImgName}).Decode(&img)
 	if err == nil {
 		if err := bucket.Delete(img.ID); err != nil {
 			log.Println("프로필 이미지 삭제 실패")
-			return api.Response{http.StatusOK, err.Error(), response{"", false, "프로필 이미지 삭제 실패"}}
+			return api.Response{http.StatusOK, err.Error(), response{defaultProfile, false, "프로필 이미지 삭제 실패"}}
 		}
 		_, err = db.MongoDB.DB("gwahangmi").C("users").UpdateOne(context.TODO(), bson.M{"uid": uid}, bson.M{"$set": bson.M{"profileImg": defaultProfile}})
 		if err != nil {
-			return api.Response{http.StatusInternalServerError, err.Error(), response{"", false, "User 프로필이미지 이름 Update 실패"}}
+			return api.Response{http.StatusInternalServerError, err.Error(), response{defaultProfile, false, "User 프로필이미지 이름 Update 실패"}}
 		}
 		log.Println("프로필 이미지 삭제 성공")
 		return api.Response{http.StatusOK, "", response{defaultProfile, true, "프로필 이미지 삭제 성공"}}
 	}
 	log.Println("프로필 이미지가 존재하지 않음")
-	return api.Response{http.StatusNotFound, err.Error(), response{"", false, "프로필 이미지가 존재하지 않음"}}
+	return api.Response{http.StatusNotFound, err.Error(), response{defaultProfile, false, "프로필 이미지가 존재하지 않음"}}
 }
