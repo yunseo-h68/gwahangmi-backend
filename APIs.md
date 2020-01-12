@@ -17,6 +17,7 @@
 - SciQuiz API
   - Quizzes API
   - Quiz API
+- File API
 
 ## API Response 구조
 - code(int) : 응답 코드
