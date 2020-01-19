@@ -158,6 +158,28 @@
     - profileImg(String): 사용자 프로필 이미지 파일 이름
     - point(int): 사용자가 보유한 포인트
     - postCnt(int): 사용자가 게시한 글의 개수
+- `PUT /api/account/users/:uid`
+  - request header: 
+    - `Content-Type`: `application/json`
+  - params: X
+  - request body: 
+    - uname(String): 수정할 사용자 이름
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - uid(String): 사용자 ID
+    - isSuccess(Boolean): 사용자 이름 수정 성공 여부
+    - message(String): 결과에 대한 상세한 메시지
+- `DELETE /api/account/users/:uid`
+  - request header: X
+  - params: X
+  - request body: X
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - uid(String): 사용자 ID
+    - isSuccess(Boolean): 사용자 삭제 성공 여부
+    - message(String): 결과에 대한 상세한 메시지
 
 ## Category API
 ### Posts API
