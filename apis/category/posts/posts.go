@@ -111,7 +111,7 @@ func (postsApi *API) Put(w http.ResponseWriter, req *http.Request, ps httprouter
 
 // Delete 메서드는 Posts API가 Request 메서드 중 Delete을 지원함을 의미합니다
 func (postsApi *API) Delete(w http.ResponseWriter, req *http.Request, ps httprouter.Params) api.Response {
-	postID := req.URL.Query().Get("post_id")
+	postID := req.URL.Query().Get("postID")
 	category := req.URL.Query().Get("category")
 	p := new(models.Post)
 	err := db.MongoDB.DB("gwahangmi").C("category_"+category).FindOne(context.TODO(), bson.M{"postID": postID}).Decode(&p)
