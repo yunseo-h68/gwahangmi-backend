@@ -136,7 +136,7 @@
 - `GET /api/account/users`
   - request header: X
   - params: 
-    - limit(int): 조회할 글(Post)의 개수
+    - limit(int): 조회할 사용자(User)의 개수
     - point(Boolean): true일 경우, point순
     - post(Boolean): true일 경우, post의 개수순
     - sort(Boolean): true면 오름차순, false이면 내림차순 정렬
