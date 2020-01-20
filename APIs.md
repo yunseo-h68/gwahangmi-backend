@@ -187,6 +187,7 @@
   - request header: X
   - params: 
     - limit(int): 조회할 글(Post)의 개수
+    - skip(int): skip할 글(Post)의 개수
     - popularity(Boolean): true일 경우, 기준을 인기순으로 잡음. false일 경우 최신순
     - total(Boolean): popularity가 true이고 total도 true일 경우, point의 총점순
     - average(Boolean): popularity가 true이고 average도 true일 경우, point의 평균순

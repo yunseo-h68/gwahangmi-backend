@@ -70,7 +70,9 @@ func (postsApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter
 		}
 	}
 	limit, _ := strconv.Atoi(req.URL.Query().Get("limit"))
+	skip, _ := strconv.Atoi(req.URL.Query().Get("skip"))
 	findOptions.SetLimit(int64(limit))
+	findOptions.SetSkip(int64(skip))
 
 	var results []*models.PointPost
 	cur, err := db.MongoDB.DB("gwahangmi").C("posts").Find(context.TODO(), bson.D{{}}, findOptions)
