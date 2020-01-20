@@ -5,7 +5,6 @@ import (
 	"gwahangmi-backend/apis/api"
 	"gwahangmi-backend/apis/db"
 	"gwahangmi-backend/apis/method"
-	"gwahangmi-backend/files"
 	"gwahangmi-backend/models"
 	"log"
 	"net/http"
@@ -97,7 +96,7 @@ func (userApi *API) Delete(w http.ResponseWriter, req *http.Request, ps httprout
 		bucket, _ := gridfs.NewBucket(
 			db.MongoDB.DB("gwahangmi").DB,
 		)
-		var img *files.ImageFile
+		var img *models.ImageFile
 		err = db.MongoDB.DB("gwahangmi").C("fs.files").FindOne(context.TODO(), bson.M{"filename": check.ProfileImg}).Decode(&img)
 		if err == nil {
 			if err := bucket.Delete(img.ID); err != nil {

@@ -93,7 +93,7 @@ func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 	if err != nil {
 		return api.Response{http.StatusNotFound, "", response{defaultProfile, false, "존재하지 않는 User"}}
 	}
-	var img *files.ImageFile
+	var img *models.ImageFile
 	err = db.MongoDB.DB("gwahangmi").C("fs.files").FindOne(context.TODO(), bson.M{"filename": u.ProfileImg}).Decode(&img)
 	if err == nil {
 		if req.Method == "PUT" {
@@ -133,7 +133,7 @@ func deleteProfile(uid, profileImgName string, bucket *gridfs.Bucket) api.Respon
 	if profileImgName == defaultProfile {
 		return api.Response{http.StatusNotFound, "", response{defaultProfile, false, "프로필 이미지가 존재하지 않음"}}
 	}
-	var img *files.ImageFile
+	var img *models.ImageFile
 	err := db.MongoDB.DB("gwahangmi").C("fs.files").FindOne(context.TODO(), bson.M{"filename": profileImgName}).Decode(&img)
 	if err == nil {
 		if err := bucket.Delete(img.ID); err != nil {
