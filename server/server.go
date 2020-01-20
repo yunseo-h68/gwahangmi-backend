@@ -2,6 +2,7 @@ package server
 
 import (
 	"gwahangmi-backend/apis"
+	"gwahangmi-backend/files"
 
 	"github.com/codegangsta/negroni"
 	"github.com/julienschmidt/httprouter"
@@ -21,6 +22,10 @@ func New() (*Server, error) {
 
 	for i := 0; i < len(apis.APIs); i++ {
 		apis.AddAPI(sv.router, apis.APIs[i])
+	}
+
+	for i := 0; i < len(files.FileHandlers); i++ {
+		files.AddFileHandler(sv.router, files.FileHandlers[i])
 	}
 
 	sv.neg.UseHandler(sv.router)

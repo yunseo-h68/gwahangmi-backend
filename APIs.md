@@ -17,7 +17,7 @@
 - SciQuiz API
   - Quizzes API
   - Quiz API
-- File API
+- [File API](#file-api)
 
 ## API Response 구조
 - code(int) : 응답 코드
@@ -263,3 +263,8 @@
       - minute: 해당 글의 작성시간 중 분
       - second: 해당 글의 작성시간 중 초
       - fullDate(String): 해당 글의 작성시간
+
+## File API
+### Profile Image File Handler
+- `GET /api/file/profileimg/:id`
+- response : 프로필 이미지 파일

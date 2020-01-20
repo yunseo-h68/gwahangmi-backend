@@ -15,4 +15,4 @@
 - [ ] Comment API 개발
 - [ ] Quizzes API 개발
 - [ ] Quiz API 개발
-- [ ] File API 개발
+- [X] [File API 개발](APIs.md#file-api)

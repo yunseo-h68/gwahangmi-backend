@@ -4,11 +4,31 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
+	"gwahangmi-backend/files/filehandler"
+	"gwahangmi-backend/files/profileimg"
 	"io"
+	"log"
 	"mime/multipart"
 
+	"github.com/julienschmidt/httprouter"
 	"go.mongodb.org/mongo-driver/mongo/gridfs"
 )
+
+// FileHandlers 변수는 등록된 File Handler들을 담습니다
+var FileHandlers []filehandler.FileHandler
+
+func init() {
+	FileHandlers = []filehandler.FileHandler{
+		new(profileimg.FileHandler),
+	}
+}
+
+// AddFileHandler 함수는 파일 핸들러 함수를 등록합니다
+func AddFileHandler(router *httprouter.Router, fileHandler filehandler.FileHandler) {
+	log.Println("\"" + fileHandler.URI() + "\" file handler is registerd")
+
+	router.GET(fileHandler.URI(), fileHandler.Handler)
+}
 
 // WriteToGridFileFile 은 GridFile로 파일 쓰기를 수행합니다.
 func WriteToGridFileFile(file multipart.File, uploadStream *gridfs.UploadStream) error {
