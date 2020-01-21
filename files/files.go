@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"gwahangmi-backend/files/filehandler"
+	"gwahangmi-backend/files/postcontent"
 	"gwahangmi-backend/files/profileimg"
 	"io"
 	"log"
@@ -20,6 +21,7 @@ var FileHandlers []filehandler.FileHandler
 func init() {
 	FileHandlers = []filehandler.FileHandler{
 		new(profileimg.FileHandler),
+		new(postcontent.FileHandler),
 	}
 }
 

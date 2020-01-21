@@ -270,3 +270,6 @@
 ### Profile Image File Handler
 - `GET /api/file/profileimg/:id`
 - response : 프로필 이미지 파일
+### Post Content File Handler
+- `GET /api/file/post/content/:postID`
+- response : 해당하는 글(Post)의 Content

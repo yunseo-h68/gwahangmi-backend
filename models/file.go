@@ -9,6 +9,13 @@ type ImageFile struct {
 	MetaData FileMeta           `bson:"metadata"`
 }
 
+// PostContent 는 글 본문에 대한 정보를 담고 있는 구조체입니다.
+type PostContent struct {
+	ID       primitive.ObjectID `bson:"_id"`
+	Filename string             `bson:"filename"`
+	MetaData FileMeta           `bson:"metadata"`
+}
+
 // FileMeta 는 Upload할 파일의 메타정보를 담는 구조체입니다.
 type FileMeta struct {
 	Inode int
