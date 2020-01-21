@@ -21,16 +21,6 @@ type Post struct {
 	UploadDate     date        `bson:"uploadDate" json:"uploadDate"`
 }
 
-type date struct {
-	Year     interface{} `bson:"year" json:"year"`
-	Month    interface{} `bson:"month" json:"month"`
-	Day      interface{} `bson:"day" json:"day"`
-	Hour     interface{} `bson:"hour" json:"hour"`
-	Minute   interface{} `bson:"minute" json:"minute"`
-	Second   interface{} `bson:"second" json:"second"`
-	FullDate interface{} `bson:"fullDate" json:"fullDate"`
-}
-
 // Content 는 Post의 content에 대한 정보를 담습니다.
 type Content struct {
 	ID       primitive.ObjectID `bson:"_id"`

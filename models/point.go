@@ -6,7 +6,7 @@ import (
 	"github.com/mholt/binding"
 )
 
-// Point 구조체는 포인트에 대한 정보를 담습니다.
+// Point 구조체는 Post 평가에 참여한 User가 제출한 Point에 대한 정보를 담습니다.
 type Point struct {
 	ID            interface{} `bson:"_id" json:"id"`
 	UID           string      `bson:"uid" json:"uid"`

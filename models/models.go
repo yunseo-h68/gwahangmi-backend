@@ -70,3 +70,13 @@ func NewUser() (*User, error) {
 	u.PostCnt = 0
 	return u, nil
 }
+
+type date struct {
+	Year     interface{} `bson:"year" json:"year"`
+	Month    interface{} `bson:"month" json:"month"`
+	Day      interface{} `bson:"day" json:"day"`
+	Hour     interface{} `bson:"hour" json:"hour"`
+	Minute   interface{} `bson:"minute" json:"minute"`
+	Second   interface{} `bson:"second" json:"second"`
+	FullDate interface{} `bson:"fullDate" json:"fullDate"`
+}
