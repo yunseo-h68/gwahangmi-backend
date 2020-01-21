@@ -12,8 +12,7 @@
 - [Category API](#category-api)
   - [Posts API](#posts-api)
   - [Post API](#post-api)
-  - Point API
-  - Comment API
+  - [Point API](#point-api)
 - SciQuiz API
   - Quizzes API
   - Quiz API
@@ -242,7 +241,7 @@
     - isSuccess(Boolean): 글 삭제 성공 여부
     - message(String): 글 삭제 결과에 대한 상세한 메시지 
 ### Post API
-- `GET /api/category/posts/:post-id`
+- `GET /api/category/posts/:postID`
   - request header: X
   - params: X
   - request body: X
@@ -265,6 +264,30 @@
       - minute: 해당 글의 작성시간 중 분
       - second: 해당 글의 작성시간 중 초
       - fullDate(String): 해당 글의 작성시간
+### Point API
+- `GET /api/category/posts/:postID/point`
+  - request header: X
+  - params: 
+    - uid(String): 사용자 아이디
+  - request body: X
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - uid(String): 사용자 아이디,
+    - point(int): 평가한 점수
+    - parentsPostID(String): 해당 글(Post) 아이디
+- `POST /api/category/posts/:postID/point`
+  - request header: 
+    - `Content-Type`: `application/json`
+  - params: X
+  - request body:
+    - uid(String): 사용자의 ID
+    - point(int): 평가 점수
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - isSuccess(Boolean): 평가 성공 여부
+    - message(String): 결과에 대한 상세한 메시지 
 
 ## File API
 ### Profile Image File Handler

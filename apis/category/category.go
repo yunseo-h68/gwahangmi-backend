@@ -2,6 +2,7 @@ package category
 
 import (
 	"gwahangmi-backend/apis/api"
+	"gwahangmi-backend/apis/category/point"
 	"gwahangmi-backend/apis/category/post"
 	"gwahangmi-backend/apis/category/posts"
 )
@@ -15,6 +16,7 @@ func init() {
 	apis := []api.API{
 		new(posts.API),
 		new(post.API),
+		new(point.API),
 	}
 
 	for i := 0; i < len(apis); i++ {

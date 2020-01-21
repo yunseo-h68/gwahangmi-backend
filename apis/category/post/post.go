@@ -22,12 +22,12 @@ type API struct {
 
 // URI 메서드는 Post API의 URI를 반환합니다
 func (postApi *API) URI() string {
-	return "/api/category/posts/:post-id"
+	return "/api/category/posts/:postID"
 }
 
 // Get 메서드는 Post API가 Request 메서드 중 Get을 지원함을 의미합니다
 func (postApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter.Params) api.Response {
-	postID := ps.ByName("post-id")
+	postID := ps.ByName("postID")
 	log.Println("PostID: ", postID)
 
 	var pointPost models.PointPost
