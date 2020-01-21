@@ -186,6 +186,7 @@
 - `GET /api/category/posts`
   - request header: X
   - params: 
+    - category(string or Boolean): 카테고리명일 경우, 해당 카테고리의 글 목록. false일 경우, 전체 글 목록.
     - limit(int): 조회할 글(Post)의 개수
     - skip(int): skip할 글(Post)의 개수
     - popularity(Boolean): true일 경우, 기준을 인기순으로 잡음. false일 경우 최신순

@@ -18,6 +18,7 @@ import (
 	"github.com/mholt/binding"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/gridfs"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -74,30 +75,48 @@ func (postsApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter
 	findOptions.SetLimit(int64(limit))
 	findOptions.SetSkip(int64(skip))
 
-	var results []*models.PointPost
-	cur, err := db.MongoDB.DB("gwahangmi").C("posts").Find(context.TODO(), bson.D{{}}, findOptions)
-
-	if err != nil {
-		log.Println("Find Err: ", err)
-		return api.Response{http.StatusInternalServerError, err.Error(), getResponse{nil}}
-	}
-	for cur.Next(context.TODO()) {
-		var elem models.PointPost
-		err := cur.Decode(&elem)
-		fmt.Printf(" document: %+v\n", elem)
+	category := req.URL.Query().Get("category")
+	var cur *mongo.Cursor
+	var categoryBool bool
+	if _, err := strconv.ParseBool(category); err != nil {
+		categoryBool = false
+		cur, err = db.MongoDB.DB("gwahangmi").C("category_"+category).Find(context.TODO(), bson.D{{}}, findOptions)
 		if err != nil {
-			log.Println(err)
+			log.Println("Find Err: ", err)
+			return api.Response{http.StatusInternalServerError, err.Error(), getResponse{nil}}
 		}
-		results = append(results, &elem)
+	} else {
+		categoryBool = true
+		cur, err = db.MongoDB.DB("gwahangmi").C("posts").Find(context.TODO(), bson.D{{}}, findOptions)
+		if err != nil {
+			log.Println("Find Err: ", err)
+			return api.Response{http.StatusInternalServerError, err.Error(), getResponse{nil}}
+		}
+	}
+	var posts []string
+	for cur.Next(context.TODO()) {
+		if categoryBool {
+			var elem models.PointPost
+			err := cur.Decode(&elem)
+			fmt.Printf(" document: %+v\n", elem)
+			if err != nil {
+				log.Println(err)
+			}
+			posts = append(posts, elem.PostID)
+		} else {
+			var elem models.Post
+			err := cur.Decode(&elem)
+			fmt.Printf(" document: %+v\n", elem)
+			if err != nil {
+				log.Println(err)
+			}
+			posts = append(posts, elem.PostID)
+		}
 	}
 	if err := cur.Err(); err != nil {
 		log.Println(err)
 	}
 
-	var posts []string
-	for i := 0; i < len(results); i++ {
-		posts = append(posts, results[i].PostID)
-	}
 	return api.Response{http.StatusOK, "", getResponse{posts}}
 }
 
