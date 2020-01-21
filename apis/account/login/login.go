@@ -48,7 +48,7 @@ func (loginApi *API) Post(w http.ResponseWriter, req *http.Request, ps httproute
 
 	if err != nil {
 		log.Println("존재하지 않는 User : ", err)
-		return api.Response{http.StatusNotFound, "", response{"", false, "존재하지 않는 User입니다"}}
+		return api.Response{http.StatusOK, "", response{"", false, "존재하지 않는 User입니다"}}
 	}
 
 	if u.UID == ul.UID {

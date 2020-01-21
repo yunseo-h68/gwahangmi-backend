@@ -34,14 +34,14 @@ func (postApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter.
 	err := db.MongoDB.DB("gwahangmi").C("posts").FindOne(context.TODO(), bson.M{"postID": postID}).Decode(&pointPost)
 	if err != nil {
 		log.Println("P 존재하지 않는 Post :", err)
-		return api.Response{http.StatusNotFound, err.Error(), nil}
+		return api.Response{http.StatusOK, err.Error(), nil}
 	}
 
 	var postData models.Post
 	err = db.MongoDB.DB("gwahangmi").C("category_"+pointPost.Category).FindOne(context.TODO(), bson.M{"postID": postID}).Decode(&postData)
 	if err != nil {
 		log.Println("C 존재하지 않는 Post :", err)
-		return api.Response{http.StatusNotFound, err.Error(), nil}
+		return api.Response{http.StatusOK, err.Error(), nil}
 	}
 	return api.Response{http.StatusOK, "", postData}
 }

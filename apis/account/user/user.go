@@ -50,7 +50,7 @@ func (userApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter.
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&u)
 	if err != nil {
 		log.Println("존재하지 않는 User:", err)
-		return api.Response{http.StatusNotFound, err.Error(), nil}
+		return api.Response{http.StatusOK, err.Error(), nil}
 	}
 	return api.Response{http.StatusOK, "", u}
 }

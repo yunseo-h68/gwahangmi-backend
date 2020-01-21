@@ -137,7 +137,7 @@ func (postsApi *API) Delete(w http.ResponseWriter, req *http.Request, ps httprou
 	p := new(models.Post)
 	err := db.MongoDB.DB("gwahangmi").C("category_"+category).FindOne(context.TODO(), bson.M{"postID": postID}).Decode(&p)
 	if err != nil {
-		return api.Response{http.StatusNotFound, "", postResponse{postID, false, "해당 글이 존재하지 않음"}}
+		return api.Response{http.StatusOK, "", postResponse{postID, false, "해당 글이 존재하지 않음"}}
 	}
 	log.Println("글 삭제 시도")
 	return deletePost(*p)
@@ -232,7 +232,7 @@ func uploadPostToGridFile(p *models.Post) error {
 func idCheck(check *models.User, uid string) (api.Response, error) {
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&check)
 	if err != nil {
-		return api.Response{http.StatusNotFound, "", postResponse{"", false, "존재하지 않는 User의 접근"}}, errors.New("존재하지 않는 User")
+		return api.Response{http.StatusOK, "", postResponse{"", false, "존재하지 않는 User의 접근"}}, errors.New("존재하지 않는 User")
 	}
 	return api.Response{}, nil
 }

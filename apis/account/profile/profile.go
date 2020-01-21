@@ -42,7 +42,7 @@ func (profileApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprout
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&u)
 
 	if err != nil {
-		return api.Response{http.StatusNotFound, err.Error(), response{"", false, "존재하지 않는 User"}}
+		return api.Response{http.StatusOK, err.Error(), response{"", false, "존재하지 않는 User"}}
 	}
 
 	return api.Response{http.StatusOK, "", response{u.ProfileImg, true, "프로필 조회 성공"}}
@@ -67,10 +67,10 @@ func (profileApi *API) Delete(w http.ResponseWriter, req *http.Request, ps httpr
 	u := new(models.User)
 	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&u)
 	if err != nil {
-		return api.Response{http.StatusNotFound, err.Error(), response{defaultProfile, false, "존재하지 않는 User"}}
+		return api.Response{http.StatusOK, err.Error(), response{defaultProfile, false, "존재하지 않는 User"}}
 	}
 	if u.ProfileImg == defaultProfile {
-		return api.Response{http.StatusNotFound, "", response{defaultProfile, false, "프로필 이미지가 존재하지 않음"}}
+		return api.Response{http.StatusOK, "", response{defaultProfile, false, "프로필 이미지가 존재하지 않음"}}
 	}
 	return deleteProfile(uid, u.ProfileImg, bucket)
 }
@@ -91,7 +91,7 @@ func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 	u := new(models.User)
 	err = db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&u)
 	if err != nil {
-		return api.Response{http.StatusNotFound, "", response{defaultProfile, false, "존재하지 않는 User"}}
+		return api.Response{http.StatusOK, "", response{defaultProfile, false, "존재하지 않는 User"}}
 	}
 	var img *models.ImageFile
 	err = db.MongoDB.DB("gwahangmi").C("fs.files").FindOne(context.TODO(), bson.M{"filename": u.ProfileImg}).Decode(&img)
@@ -131,7 +131,7 @@ func uploadProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 
 func deleteProfile(uid, profileImgName string, bucket *gridfs.Bucket) api.Response {
 	if profileImgName == defaultProfile {
-		return api.Response{http.StatusNotFound, "", response{defaultProfile, false, "프로필 이미지가 존재하지 않음"}}
+		return api.Response{http.StatusOK, "", response{defaultProfile, false, "프로필 이미지가 존재하지 않음"}}
 	}
 	var img *models.ImageFile
 	err := db.MongoDB.DB("gwahangmi").C("fs.files").FindOne(context.TODO(), bson.M{"filename": profileImgName}).Decode(&img)
@@ -148,5 +148,5 @@ func deleteProfile(uid, profileImgName string, bucket *gridfs.Bucket) api.Respon
 		return api.Response{http.StatusOK, "", response{defaultProfile, true, "프로필 이미지 삭제 성공"}}
 	}
 	log.Println("프로필 이미지가 존재하지 않음")
-	return api.Response{http.StatusNotFound, err.Error(), response{defaultProfile, false, "프로필 이미지가 존재하지 않음"}}
+	return api.Response{http.StatusOK, err.Error(), response{defaultProfile, false, "프로필 이미지가 존재하지 않음"}}
 }
