@@ -90,6 +90,19 @@ func (pointApi *API) Post(w http.ResponseWriter, req *http.Request, ps httproute
 		log.Println("POST 찾기 실패 : ", err)
 		return api.Response{http.StatusOK, err.Error(), response{false, "존재하지 않는 Post ID"}}
 	}
+
+	authorCheck := models.User{}
+	err = db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": point.UID}).Decode(&authorCheck)
+	if err != nil {
+		log.Println("존재하지 않는 PostAuthor")
+	} else {
+		_, err = db.MongoDB.DB("gwahangmi").C("users").UpdateOne(context.TODO(), bson.M{"uid": postCheck.Author}, bson.M{"$set": bson.M{"point": authorCheck.Point + 1}})
+		if err != nil {
+			log.Println("포인트 적립 실패 : ", err)
+			return api.Response{http.StatusInternalServerError, err.Error(), response{false, "포인트 적립 실패"}}
+		}
+	}
+
 	/* 카테고리 포인트 적립 */
 	_, err = db.MongoDB.DB("gwahangmi").C("category_"+pointPostCheck.Category).UpdateOne(context.TODO(), bson.M{"postID": postID}, bson.M{"$set": bson.M{"participantCnt": postCheck.ParticipantCnt + 1}})
 	if err != nil {
