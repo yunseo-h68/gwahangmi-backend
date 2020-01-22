@@ -92,7 +92,7 @@ func (pointApi *API) Post(w http.ResponseWriter, req *http.Request, ps httproute
 	}
 
 	authorCheck := models.User{}
-	err = db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": point.UID}).Decode(&authorCheck)
+	err = db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": postCheck.Author}).Decode(&authorCheck)
 	if err != nil {
 		log.Println("존재하지 않는 PostAuthor")
 	} else {

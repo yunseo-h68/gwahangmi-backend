@@ -166,7 +166,7 @@ func uploadPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) 
 		}
 	}
 	timeNow := time.Now()
-	p.PostID = "post_" + check.UID + "_gwahangmi_" + timeNow.Format("2006-01-02-15:04:05")
+	p.PostID = "post_" + check.UID + "_gwahangmi_" + timeNow.Format("2006_01_02_15_04_05")
 	p.UploadDate.FullDate = timeNow.Format("2006-01-02-15:04:05")
 	p.UploadDate.Year = timeNow.Year()
 	p.UploadDate.Month = timeNow.Month()
