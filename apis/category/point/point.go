@@ -41,11 +41,17 @@ func (pointApi *API) Get(w http.ResponseWriter, req *http.Request, ps httprouter
 	postID := ps.ByName("postID")
 	uid := req.URL.Query().Get("uid")
 
+	userCheck := models.User{}
+	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&userCheck)
+	if err != nil {
+		log.Println("존재하지 않는 User")
+		return api.Response{http.StatusOK, err.Error(), "존재하지 않는 User"}
+	}
 	pointResCheck := pointRes{}
-	err := db.MongoDB.DB("gwahangmi").C(postID+"point").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&pointResCheck)
+	err = db.MongoDB.DB("gwahangmi").C(postID+"point").FindOne(context.TODO(), bson.M{"uid": uid}).Decode(&pointResCheck)
 	if err != nil {
 		log.Println("아직 평가하지 않은 Post : ", err)
-		return api.Response{http.StatusOK, err.Error(), nil}
+		return api.Response{http.StatusOK, err.Error(), "아직 평가하지 않은 Post"}
 	}
 	return api.Response{http.StatusOK, "", pointResCheck}
 }
@@ -58,6 +64,14 @@ func (pointApi *API) Post(w http.ResponseWriter, req *http.Request, ps httproute
 		log.Println("요청 메시지 파싱 실패 : ", errs)
 		return api.Response{http.StatusInternalServerError, errs.Error(), response{false, "요청 메시지 파싱 실패"}}
 	}
+
+	userCheck := models.User{}
+	err := db.MongoDB.DB("gwahangmi").C("users").FindOne(context.TODO(), bson.M{"uid": point.UID}).Decode(&userCheck)
+	if err != nil {
+		log.Println("존재하지 않는 User")
+		return api.Response{http.StatusOK, err.Error(), response{false, "존재하지 않는 User"}}
+	}
+
 	point.ParentsPostID = postID
 	if _, err := db.MongoDB.DB("gwahangmi").C(postID+"point").InsertOne(context.TODO(), point); err != nil {
 		log.Println("DB Insert 실패 : ", err)
@@ -65,7 +79,7 @@ func (pointApi *API) Post(w http.ResponseWriter, req *http.Request, ps httproute
 	}
 
 	pointPostCheck := new(models.PointPost)
-	err := db.MongoDB.DB("gwahangmi").C("posts").FindOne(context.TODO(), bson.M{"postID": postID}).Decode(&pointPostCheck)
+	err = db.MongoDB.DB("gwahangmi").C("posts").FindOne(context.TODO(), bson.M{"postID": postID}).Decode(&pointPostCheck)
 	if err != nil {
 		log.Println("POST 찾기 실패 : ", err)
 		return api.Response{http.StatusOK, err.Error(), response{false, "존재하지 않는 Post ID"}}
