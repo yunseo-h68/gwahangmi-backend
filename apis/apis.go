@@ -4,6 +4,7 @@ import (
 	"gwahangmi-backend/apis/account"
 	"gwahangmi-backend/apis/api"
 	"gwahangmi-backend/apis/category"
+	"gwahangmi-backend/apis/sciquiz"
 	"log"
 	"net/http"
 
@@ -19,6 +20,7 @@ func init() {
 	apis := [][]api.API{
 		account.AccountAPIs,
 		category.CategoryAPIs,
+		sciquiz.SciQuizAPIs,
 	}
 
 	for i := 0; i < len(apis); i++ {

@@ -71,6 +71,30 @@ func NewUser() (*User, error) {
 	return u, nil
 }
 
+// NewQuiz 함수는 새로운 Quize 구조체를 생성합니다.
+func NewQuiz() (*Quiz, error) {
+	q := new(Quiz)
+	q.ID = primitive.NewObjectID()
+	q.QuizID = ""
+	q.Author = ""
+	q.Title = ""
+	q.Explanation = ""
+	q.Answers = []string{"", "", "", ""}
+	q.RightAnswer = ""
+
+	q.ParticipantCnt = 0
+	q.Point = 0
+
+	q.UploadDate.FullDate = ""
+	q.UploadDate.Year = ""
+	q.UploadDate.Month = ""
+	q.UploadDate.Day = ""
+	q.UploadDate.Hour = ""
+	q.UploadDate.Minute = ""
+	q.UploadDate.Second = ""
+	return q, nil
+}
+
 type date struct {
 	Year     interface{} `bson:"year" json:"year"`
 	Month    interface{} `bson:"month" json:"month"`

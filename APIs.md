@@ -13,9 +13,10 @@
   - [Posts API](#posts-api)
   - [Post API](#post-api)
   - [Point API](#point-api)
-- SciQuiz API
-  - Quizzes API
-  - Quiz API
+- [SciQuiz API](#sciquiz-api)
+  - [Quizzes API](#quizzes-api)
+  - [Quiz API](#quiz-api)
+  - [QuizeAnswer API](#quizanswer-api)
 - [File API](#file-api)
 
 ## API Response 구조
@@ -160,12 +161,7 @@
 - `PUT /api/account/users/:uid`
   - request header: 
     - `Content-Type`: `application/json`
-  - params: X
-  - request body: 
-    - uname(String): 수정할 사용자 이름
-  - response header: 
-    - `Content-Type`: `application/json`
-  - response body:
+  - params: XPosts
     - uid(String): 사용자 ID
     - isSuccess(Boolean): 사용자 이름 수정 성공 여부
     - message(String): 결과에 대한 상세한 메시지
@@ -289,6 +285,87 @@
     - isSuccess(Boolean): 평가 성공 여부
     - message(String): 결과에 대한 상세한 메시지 
 
+## SciQuiz API
+### Quizzes API
+- `GET /api/sci-quiz/quizzes`
+  - request header: X
+  - params: 
+    - limit(int): 조회할 쿠즈의 개수
+    - skip(int): skip할 퀴즈의 개수
+    - point(Boolean): true면 해당 퀴즈를 맞췄을 때 적립되는 포인트 순으로 정렬
+    - participantCnt(Boolean): true면 해당 퀴즈의 정답자 순으로 정렬
+    - sort(Boolean): true면 오름차순, false이면 내림차순 정렬
+  - request body: X
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - quizzes([]String): 퀴즈의 ID 배열
+- `POST /api/sci-quiz/quizzes`
+  - request header: 
+    - `Content-Type`: `application/json`
+  - params: X
+  - request body:
+    - author(String): 퀴즈의 생성자 ID
+    - title(String): 퀴즈의 제목(문제)
+    - explanation(String): 퀴즈의 해설
+    - answers([]String): 퀴즈의 보기 배열
+    - rightAnswer(String): 퀴즈의 정답
+    - point(float): 퀴즈를 풀었을 때 적립되는 포인트
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - quizID(String): 생성한 퀴즈의 ID
+    - isSuccess(Boolean): 퀴즈 생성 성공 여부
+    - message(String): 퀴즈 생성 결과에 대한 상세한 메시지
+### Quiz API
+- `GET /api/sci-quiz/quizzes/:quizID`
+  - request header: X
+  - params: X
+  - request body: X
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - quizID(String): 해당 퀴즈의 ID
+    - author(String): 해당 퀴즈의 생성자 ID
+    - title(String): 해당 퀴즈의 제목(문제)
+    - explanation(String): 해당 퀴즈의 해설
+    - answers([]String): 해당 퀴즈의 보기 배열
+    - rightAnswer(String): 해당 퀴즈의 정답
+    - participantCnt(int): 해당 퀴즈의 참여자 수
+    - point(float): 해당 퀴즈를 풀었을 때 적립되는 포인트
+    - uploadDate:
+      - year: 해당 퀴즈의 생성시간 중 연도
+      - month: 해당 퀴즈의 생성시간 중 월
+      - day: 해당 퀴즈의 생성시간 중 일
+      - hour: 해당 퀴즈의 생성시간 중 시간
+      - minute: 해당 퀴즈의 생성시간 중 분
+      - second: 해당 퀴즈의 생성시간 중 초
+      - fullDate(String): 해당 퀴즈의 생성시간
+### QuizAnswer API
+- - `GET /api/sci-quiz/quizzes/:quizID/answer`
+  - request header: X
+  - params: 
+    - uid(String): 사용자 ID
+  - request body: X
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - isSuccess(Boolean): 퀴즈를 맞춘 적이 있다면 true, 없다면 false
+    - message(String): 사용자의 퀴즈 정답 여부 조회 결과에 대한 자세한 메시지
+- `POST /api/sci-quiz/quizzes/:quizID/answer`
+  - request header: 
+    - `Content-Type`: `application/json`
+  - params: X
+  - request body:
+    - quizID(String): 정답을 제출한 퀴즈 아이디
+    - uid(String): 정답을 제출한 사용자의 아이디
+    - answer(String): 제출한 퀴즈의 답
+  - response header: 
+    - `Content-Type`: `application/json`
+  - response body:
+    - isSuccess(Boolean): 제출한 답의 정답 여부
+    - message(String): 결과에 대한 상세한 메시지
+    
 ## File API
 ### Profile Image File Handler
 - `GET /api/file/profileimg/:id`

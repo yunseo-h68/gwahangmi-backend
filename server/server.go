@@ -1,8 +1,11 @@
 package server
 
 import (
+	"flag"
 	"gwahangmi-backend/apis"
 	"gwahangmi-backend/files"
+	"net/http"
+	"strings"
 
 	"github.com/codegangsta/negroni"
 	"github.com/julienschmidt/httprouter"
@@ -19,6 +22,12 @@ func New() (*Server, error) {
 	sv := new(Server)
 	sv.router = httprouter.New()
 	sv.neg = negroni.Classic()
+
+	directory := flag.String("d", ".", "the directory of static file to host")
+	flag.Parse()
+	fileServer := http.FileServer(FileSystem{http.Dir(*directory)})
+
+	http.Handle("/", http.StripPrefix(strings.TrimRight("/public/", "/"), fileServer))
 
 	for i := 0; i < len(apis.APIs); i++ {
 		apis.AddAPI(sv.router, apis.APIs[i])
