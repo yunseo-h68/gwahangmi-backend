@@ -12,6 +12,7 @@
 - [x] [Posts API 개발](APIs.md#posts-api)
 - [X] [Post API 개발](APIs.md#post-api)
 - [X] [Point API 개발](APIs.md#point-api)
-- [ ] Quizzes API 개발
-- [ ] Quiz API 개발
+- [X] [Quizzes API 개발](APIs.md#quizzes-api)
+- [X] [Quiz API 개발](APIs.md#quiz-api)
+- [ ] [QuizeAnswer API 개발](APIs.md#quizanswer-api)
 - [X] [File API 개발](APIs.md#file-api)

@@ -3,6 +3,7 @@ package quizzes
 import (
 	"gwahangmi-backend/apis/api"
 	"gwahangmi-backend/apis/db"
+	"gwahangmi-backend/apis/method"
 	"gwahangmi-backend/files"
 	"gwahangmi-backend/models"
 
@@ -24,6 +25,8 @@ import (
 
 // API 구조체는 Posts Api에 대한 정보를 담습니다.
 type API struct {
+	method.PutNotSupported
+	method.DeleteNotSupported
 }
 
 type getResponse struct {
