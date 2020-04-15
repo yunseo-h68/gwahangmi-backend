@@ -341,30 +341,6 @@
       - minute: 해당 퀴즈의 생성시간 중 분
       - second: 해당 퀴즈의 생성시간 중 초
       - fullDate(String): 해당 퀴즈의 생성시간
-### QuizAnswer API
-- - `GET /api/sci-quiz/quizzes/:quizID/answer`
-  - request header: X
-  - params: 
-    - uid(String): 사용자 ID
-  - request body: X
-  - response header: 
-    - `Content-Type`: `application/json`
-  - response body:
-    - isSuccess(Boolean): 퀴즈를 맞춘 적이 있다면 true, 없다면 false
-    - message(String): 사용자의 퀴즈 정답 여부 조회 결과에 대한 자세한 메시지
-- `POST /api/sci-quiz/quizzes/:quizID/answer`
-  - request header: 
-    - `Content-Type`: `application/json`
-  - params: X
-  - request body:
-    - quizID(String): 정답을 제출한 퀴즈 아이디
-    - uid(String): 정답을 제출한 사용자의 아이디
-    - answer(String): 제출한 퀴즈의 답
-  - response header: 
-    - `Content-Type`: `application/json`
-  - response body:
-    - isSuccess(Boolean): 제출한 답의 정답 여부
-    - message(String): 결과에 대한 상세한 메시지
     
 ## File API
 ### Profile Image File Handler
