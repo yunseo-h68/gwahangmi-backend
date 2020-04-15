@@ -14,5 +14,4 @@
 - [X] [Point API 개발](APIs.md#point-api)
 - [X] [Quizzes API 개발](APIs.md#quizzes-api)
 - [X] [Quiz API 개발](APIs.md#quiz-api)
-- [ ] [QuizeAnswer API 개발](APIs.md#quizanswer-api)
 - [X] [File API 개발](APIs.md#file-api)
